@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: app-cinema-api  # Name of the application, useful for logs, monitoring, and service discovery
+  datasource:
+    driver-class-name: org.postgresql.Driver  # JDBC driver class used to connect to PostgreSQL
+    username: cinema_admin  # Database username
+    password: password123  # Database password (avoid hardcoding in production)
+    url: jdbc:postgresql://localhost:5432/cinema_db_dev  # JDBC URL to connect to your PostgreSQL database # Format: jdbc:postgresql://<host>:<port>/<database_name>
+

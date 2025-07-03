@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: app-cinema-api  # Name of the application, useful for logs and monitoring
+  profiles:
+    active: dev  # Sets the active Spring profile to "dev"
+                 # This tells Spring to load configuration files like application-dev.yml
+                 # Useful to separate settings for development, production, testing, etc.
