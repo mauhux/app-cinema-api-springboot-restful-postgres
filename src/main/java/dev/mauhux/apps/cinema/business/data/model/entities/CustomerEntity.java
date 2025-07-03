@@ -1,4 +1,4 @@
-package dev.mauhux.apps.cinema.entity;
+package dev.mauhux.apps.cinema.business.data.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -34,7 +35,7 @@ public class CustomerEntity {
     private String documentNumber;
 
     @Column(name = "birth_date")
-    private java.time.LocalDate birthDate;
+    private LocalDate birthDate;
 
     @Column(length = 20)
     private String gender;

@@ -23,3 +23,6 @@ CREATE TABLE customers (
 
 -- Get Customers
 SELECT * FROM customers
+
+
+
