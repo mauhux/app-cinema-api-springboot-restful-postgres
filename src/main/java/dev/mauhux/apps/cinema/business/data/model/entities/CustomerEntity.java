@@ -47,4 +47,9 @@ public class CustomerEntity {
 
     @Column(name = "marital_status")
     private String maritalStatus;
+
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favorite_cinema_id")
+    private CinemaEntity favoriteCinema;*/
 }

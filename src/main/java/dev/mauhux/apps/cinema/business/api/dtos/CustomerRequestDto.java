@@ -5,10 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Builder
-public record CustomerCommandDto(
+public record CustomerRequestDto(
         @NotEmpty(message = "The 'first name' field cannot be empty")
         String firstName,
 
