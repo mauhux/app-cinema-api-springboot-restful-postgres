@@ -11,6 +11,27 @@
 			"item": [
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const authHeader = pm.response.headers.get(\"Authorization\");\r",
+									"\r",
+									"if (authHeader && authHeader.startsWith(\"Bearer \")) {\r",
+									"    const token = authHeader.replace(\"Bearer \", \"\");\r",
+									"    pm.environment.set(\"init_token\", token); // O pm.globals.set(...) si prefieres global\r",
+									"    console.log(\"✅ Token guardado:\", token);\r",
+									"} else {\r",
+									"    console.log(\"❌ No se encontró el header Authorization.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -24,12 +45,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/auth/login",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/v1/auth/login",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -42,18 +61,39 @@
 				},
 				{
 					"name": "login-body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Obtener el token desde la respuesta del body JSON\r",
+									"let response = pm.response.json();\r",
+									"if (response.token) {\r",
+									"    // Guardar token como variable de entorno (o usa global si prefieres)\r",
+									"    pm.environment.set(\"access_token\", response.token);\r",
+									"    console.log(\"✅ Nuevo token guardado:\", response.token);\r",
+									"} else {\r",
+									"    console.warn(\"⚠️ No se encontró token en la respuesta.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbXSwiaXNzIjoiTWF1aHV4IiwiaWF0IjoxNzUyMTE4MDcxLCJleHAiOjE3NTIxMTg5NzF9.DuR7YkAjUdnmoTsYOFzJQHWbmvhJoWfGHV7F24xOJGo",
+								"value": "Bearer {{access_token}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"ADMIN\",\r\n  \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -61,12 +101,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/auth/login-body",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/v1/auth/login-body",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"api",
 								"v1",
@@ -76,6 +114,94 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ubigeo",
+			"item": [
+				{
+					"name": "Locations",
+					"item": [
+						{
+							"name": "Get Departments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/locations/departments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"locations",
+										"departments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Provinces by Departmet",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/locations/departments/{{departmentId}}/provinces",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"locations",
+										"departments",
+										"{{departmentId}}",
+										"provinces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Districts By Provinces",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/locations/provinces/{{provinceId}}/districts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"locations",
+										"provinces",
+										"{{provinceId}}",
+										"districts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
