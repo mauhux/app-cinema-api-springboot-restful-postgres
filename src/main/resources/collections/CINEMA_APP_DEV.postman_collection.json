@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "792943a2-2fab-456a-9d39-a13103fb1c3d",
+		"name": "CINEMA_APP_DEV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21646217"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-body",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbXSwiaXNzIjoiTWF1aHV4IiwiaWF0IjoxNzUyMTE4MDcxLCJleHAiOjE3NTIxMTg5NzF9.DuR7YkAjUdnmoTsYOFzJQHWbmvhJoWfGHV7F24xOJGo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"ADMIN\",\r\n  \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login-body",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login-body"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Get All Customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(200);\r",
+									"});\r",
+									"\r",
+									"const data = pm.response.json();\r",
+									"\r",
+									"if (Array.isArray(data) && data.length > 0) {\r",
+									"    const firstItemId = data[0].id;\r",
+									"\r",
+									"    // Set appropriate variable depending on the resource\r",
+									"    if (pm.request.url.path.includes(\"customers\")) {\r",
+									"        pm.environment.set(\"customer_id\", firstItemId);\r",
+									"    } else if (pm.request.url.path.includes(\"cinemas\")) {\r",
+									"        pm.environment.set(\"cinema_id\", firstItemId);\r",
+									"    } else if (pm.request.url.path.includes(\"movies\")) {\r",
+									"        pm.environment.set(\"movie_id\", firstItemId);\r",
+									"    } else if (pm.request.url.path.includes(\"showtimes\")) {\r",
+									"        pm.environment.set(\"showtime_id\", firstItemId);\r",
+									"    } else if (pm.request.url.path.includes(\"reservations\")) {\r",
+									"        pm.environment.set(\"reservation_id\", firstItemId);\r",
+									"    }\r",
+									"\r",
+									"    console.log(\"Saved ID from collection:\", firstItemId);\r",
+									"} else {\r",
+									"    console.warn(\"No items found in the response.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customers/8026e367-38bf-466f-82a2-c283aed9d8bb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"8026e367-38bf-466f-82a2-c283aed9d8bb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"FARLOS\",\r\n    \"lastName\": \"CAECERES\",\r\n    \"documentType\": \"DNI\",\r\n    \"documentNumber\": \"70556619\",\r\n    \"birthDate\": \"2024-03-30\",\r\n    \"gender\": \"OTHER\",\r\n    \"phoneNumber\": \"920667633\",\r\n    \"address\": \"MANTARO 285\",\r\n    \"maritalStatus\": \"DIVORCED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"PAOLE\",\r\n    \"lastName\": \"HARO\",\r\n    \"documentType\": \"DNI\",\r\n    \"documentNumber\": \"987654321\",\r\n    \"birthDate\": \"2024-03-30\",\r\n    \"gender\": \"FEMALE\",\r\n    \"phoneNumber\": \"920667633\",\r\n    \"address\": \"MANTARO 285\",\r\n    \"maritalStatus\": \"DIVORCED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/customers/ca2139d1-1aad-4599-a4c0-2fff66f55554",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"ca2139d1-1aad-4599-a4c0-2fff66f55554"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customers/ca2139d1-1aad-4599-a4c0-2fff66f55554",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customers",
+								"ca2139d1-1aad-4599-a4c0-2fff66f55554"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token Reniec",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://api.apis.net.pe",
+					"protocol": "http",
+					"host": [
+						"api",
+						"apis",
+						"net",
+						"pe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get DNI",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer apis-token-16884.xC8Oc81P9ZUySnzwHKe0ii9WQ7UrjDWo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.apis.net.pe/v2/reniec/dni?numero=70556617",
+					"protocol": "https",
+					"host": [
+						"api",
+						"apis",
+						"net",
+						"pe"
+					],
+					"path": [
+						"v2",
+						"reniec",
+						"dni"
+					],
+					"query": [
+						{
+							"key": "numero",
+							"value": "70556617"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

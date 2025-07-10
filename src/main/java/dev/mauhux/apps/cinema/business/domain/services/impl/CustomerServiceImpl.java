@@ -1,7 +1,7 @@
 package dev.mauhux.apps.cinema.business.domain.services.impl;
 
-import dev.mauhux.apps.cinema.business.api.dtos.CustomerCommandDto;
-import dev.mauhux.apps.cinema.business.api.dtos.CustomerDto;
+import dev.mauhux.apps.cinema.business.api.dtos.CustomerRequestDto;
+import dev.mauhux.apps.cinema.business.api.dtos.CustomerResponseDto;
 import dev.mauhux.apps.cinema.business.data.repositories.CustomerRepository;
 import dev.mauhux.apps.cinema.business.domain.mappers.CustomerMapper;
 import dev.mauhux.apps.cinema.business.domain.services.CustomerService;
@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
 
-    public List<CustomerDto> findAllCustomers() {
+    public List<CustomerResponseDto> findAllCustomers() {
         return customerRepository
                 .findAll()
                 .stream()
@@ -32,28 +32,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDto> findCustomerById(UUID id) {
+    public Optional<CustomerResponseDto> findCustomerById(UUID id) {
         return customerRepository
                 .findById(id)
                 .map(customerMapper::toDto);
     }
 
     @Override
-    public CustomerDto createCustomer(CustomerCommandDto customerCommandDto) {
+    public CustomerResponseDto createCustomer(CustomerRequestDto customerRequestDto) {
         return customerMapper
                 .toDto(
                         customerRepository.save(
-                                customerMapper.toEntity(customerCommandDto)
+                                customerMapper.toEntity(customerRequestDto)
                         )
                 );
     }
 
     @Override
-    public CustomerDto updateCustomer(CustomerCommandDto customerCommandDto, UUID id) {
+    public CustomerResponseDto updateCustomer(CustomerRequestDto customerRequestDto, UUID id) {
         return customerRepository
                 .findById(id)
                 .map(customerEntity -> {
-                    customerMapper.updateEntityFromDto(customerCommandDto, customerEntity);
+                    customerMapper.updateEntityFromDto(customerRequestDto, customerEntity);
                     return customerMapper.toDto(customerRepository.save(customerEntity));
                 })
                 .orElseThrow(() -> {

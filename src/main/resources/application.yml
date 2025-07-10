@@ -5,3 +5,20 @@ spring:
     active: dev  # Sets the active Spring profile to "dev"
                  # This tells Spring to load configuration files like application-dev.yml
                  # Useful to separate settings for development, production, testing, etc.
+
+springdoc:
+  api-docs:
+    enable: true # Enables automatic generation of API documentation
+    path: /api/docs # Path where the API documentation will be available
+  swagger-ui:
+    enable: true # Enables Swagger UI interface for exploring the API
+    path: /swagger-ui.html # Path where the Swagger UI interface will be available
+    tagsSorter: alpha # Sorts the tags in the Swagger UI alphabetically
+    operationsSorter: alpha # Sorts the operations within each tag alphabetically
+
+token:
+  signing:
+    # Base64-encoded secret key used to sign the token
+    # This key is used to generate the signature of the JWT token, ensuring its integrity and authenticity.
+    # This key should remain private and never be shared publicly.
+    key: TWV1aHVuPXdvT0RlVnBvZl9GdWxsLVN0YWNrLURldmVsb3BlckAyMDI1JQ== # Mauhux=On+Mode_Full-Stack-Developer@2025%
