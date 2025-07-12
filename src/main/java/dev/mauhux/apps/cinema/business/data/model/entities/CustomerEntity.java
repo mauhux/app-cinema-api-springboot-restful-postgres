@@ -41,6 +41,12 @@ public class CustomerEntity {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
+    @Column(name = "login_email", nullable = false, unique = true, length = 100)
+    private String loginEmail;
+
+    @Column(name = "login_password", nullable = false, length = 100)
+    private String loginPassword;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", nullable = false, length = 20)
     private DocumentType documentType;

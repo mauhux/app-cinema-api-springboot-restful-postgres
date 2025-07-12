@@ -10,12 +10,12 @@ public record CustomerResponseDto(
         UUID id,
         String firstName,
         String lastName,
+        String email,
         String documentType,
         String documentNumber,
         LocalDate birthDate,
         String phoneNumber,
         String gender,
-        //String email,
         DistrictResponseDto district,
         CinemaPublicResponseDto favoriteCinema
 ) {

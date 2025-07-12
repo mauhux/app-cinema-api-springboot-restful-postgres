@@ -215,31 +215,19 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.equal(200);\r",
-									"});\r",
+									"// Parseamos la respuesta\r",
+									"let responseData = pm.response.json();\r",
 									"\r",
-									"const data = pm.response.json();\r",
-									"\r",
-									"if (Array.isArray(data) && data.length > 0) {\r",
-									"    const firstItemId = data[0].id;\r",
-									"\r",
-									"    // Set appropriate variable depending on the resource\r",
-									"    if (pm.request.url.path.includes(\"customers\")) {\r",
-									"        pm.environment.set(\"customer_id\", firstItemId);\r",
-									"    } else if (pm.request.url.path.includes(\"cinemas\")) {\r",
-									"        pm.environment.set(\"cinema_id\", firstItemId);\r",
-									"    } else if (pm.request.url.path.includes(\"movies\")) {\r",
-									"        pm.environment.set(\"movie_id\", firstItemId);\r",
-									"    } else if (pm.request.url.path.includes(\"showtimes\")) {\r",
-									"        pm.environment.set(\"showtime_id\", firstItemId);\r",
-									"    } else if (pm.request.url.path.includes(\"reservations\")) {\r",
-									"        pm.environment.set(\"reservation_id\", firstItemId);\r",
-									"    }\r",
-									"\r",
-									"    console.log(\"Saved ID from collection:\", firstItemId);\r",
+									"// Validamos que sea un array y tenga al menos un objeto\r",
+									"if (Array.isArray(responseData) && responseData.length > 0) {\r",
+									"    let customerId = responseData[0].id;\r",
+									"    \r",
+									"    // Guardamos el id como variable de entorno\r",
+									"    pm.environment.set(\"customer_id\", customerId);\r",
+									"    \r",
+									"    console.log(\"Customer ID guardado:\", customerId);\r",
 									"} else {\r",
-									"    console.warn(\"No items found in the response.\");\r",
+									"    console.warn(\"No se encontró un cliente válido en la respuesta.\");\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -280,13 +268,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/customers/b2f1dbf5-5ff7-4157-9ec7-480cfdad9e63",
+							"raw": "{{base_url}}/customers/{{customer_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"customers",
-								"b2f1dbf5-5ff7-4157-9ec7-480cfdad9e63"
+								"{{customer_id}}"
 							]
 						}
 					},
@@ -294,6 +282,28 @@
 				},
 				{
 					"name": "Create Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parseamos la respuesta como objeto\r",
+									"let responseData = pm.response.json();\r",
+									"\r",
+									"// Verificamos si tiene un campo `id`\r",
+									"if (responseData.id) {\r",
+									"    pm.environment.set(\"customer_id\", responseData.id);\r",
+									"    console.log(\"Nuevo Customer ID guardado:\", responseData.id);\r",
+									"} else {\r",
+									"    console.warn(\"No se pudo encontrar el campo 'id' en la respuesta del POST.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -305,7 +315,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"SCARLET\",\r\n  \"lastName\": \"JOHANSON\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"SCARLET\",\r\n  \"lastName\": \"JOHANSON\",\r\n  \"email\": \"scarlet@gmail.com\",\r\n  \"password\": \"pass123\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -337,7 +347,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"firstName\": \"JULIA\",\r\n  \"lastName\": \"ROBERTS\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"JULIA\",\r\n  \"lastName\": \"ROBERTS\",\r\n  \"email\": \"julia@gmail.com\",\r\n  \"password\": \"pass123\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,13 +355,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/customers/37afb24a-3cdb-4361-a69f-228f409ef405",
+							"raw": "{{base_url}}/customers/{{customer_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"customers",
-								"37afb24a-3cdb-4361-a69f-228f409ef405"
+								"{{customer_id}}"
 							]
 						}
 					},
@@ -369,13 +379,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/customers/37afb24a-3cdb-4361-a69f-228f409ef405",
+							"raw": "{{base_url}}/customers/{{customer_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"customers",
-								"37afb24a-3cdb-4361-a69f-228f409ef405"
+								"{{customer_id}}"
 							]
 						}
 					},
