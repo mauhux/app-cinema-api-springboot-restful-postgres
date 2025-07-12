@@ -9,13 +9,13 @@ import java.util.UUID;
 
 public interface CustomerService {
 
-    List<CustomerResponseDto> findAllCustomers();
+    List<CustomerResponseDto> getCustomers();
 
-    Optional<CustomerResponseDto> findCustomerById(UUID id);
+    Optional<CustomerResponseDto> getCustomerById(UUID id);
 
     CustomerResponseDto createCustomer(CustomerRequestDto customerRequestDto);
 
-    CustomerResponseDto updateCustomer(CustomerRequestDto customerRequestDto, UUID id);
+    CustomerResponseDto updateCustomer(UUID id, CustomerRequestDto customerRequestDto);
 
     void deleteCustomer(UUID id);
 
