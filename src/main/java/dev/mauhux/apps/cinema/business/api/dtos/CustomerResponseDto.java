@@ -13,9 +13,10 @@ public record CustomerResponseDto(
         String documentType,
         String documentNumber,
         LocalDate birthDate,
-        String gender,
         String phoneNumber,
-        String address,
-        String maritalStatus
+        String gender,
+        //String email,
+        DistrictResponseDto district,
+        CinemaPublicResponseDto favoriteCinema
 ) {
 }

@@ -1,38 +1,52 @@
 package dev.mauhux.apps.cinema.business.api.dtos;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import dev.mauhux.apps.cinema.business.domain.enums.DocumentType;
+import dev.mauhux.apps.cinema.business.domain.enums.Gender;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Builder
 public record CustomerRequestDto(
-        @NotEmpty(message = "The 'first name' field cannot be empty")
+
+        @NotBlank(message = "First name is required.")
         String firstName,
 
-        @NotEmpty(message = "The 'last name' field cannot be empty")
+        @NotBlank(message = "Last name is required.")
         String lastName,
 
-        @NotEmpty(message = "The 'document type' field cannot be empty")
-        String documentType,
+//        @NotBlank(message = "Email is required.")
+//        @Email(message = "Email should be valid.")
+//        String email,
 
-        @NotEmpty(message = "The 'document number' field cannot be empty")
+//        @NotBlank(message = "Password is required.")
+//        @Size(min = 6, message = "Password must be at least 6 characters long.")
+//        String password,
+
+        @NotNull(message = "Document type is required.")
+        DocumentType documentType,
+
+        @NotBlank(message = "Document number is required.")
+        @Size(max = 12, message = "Document number must not exceed 12 characters.")
         String documentNumber,
 
-        @NotNull(message = "The 'birth date' field cannot be null")
+        @NotNull(message = "Birth date is required.")
+        @Past(message = "Birth date must be in the past.")
         LocalDate birthDate,
 
-        @NotEmpty(message = "The 'gender' field cannot be empty")
-        String gender,
-
-        @NotEmpty(message = "The 'phone number' field cannot be empty")
+        @NotBlank(message = "Phone number is required.")
+        @Pattern(regexp = "\\d{9}", message = "Phone number must be 9 digits.")
         String phoneNumber,
 
-        @NotEmpty(message = "The 'address' field cannot be empty")
-        String address,
+        @NotBlank(message = "District ID is required.")
+        String districtId,
 
-        @NotEmpty(message = "The 'marital status' field cannot be empty")
-        String maritalStatus
+        @NotNull(message = "Favorite cinema is required.")
+        UUID cinemaId,
+
+        @NotNull(message = "Gender is required.")
+        Gender gender
 ) {
 }

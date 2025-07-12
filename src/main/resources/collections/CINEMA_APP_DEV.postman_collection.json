@@ -87,7 +87,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
+								"value": "Bearer {{init_token}}",
 								"type": "text"
 							}
 						],
@@ -209,7 +209,7 @@
 			"name": "Customers",
 			"item": [
 				{
-					"name": "Get All Customers",
+					"name": "Get Customers",
 					"event": [
 						{
 							"listen": "test",
@@ -249,14 +249,18 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/customers",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"customers"
 							]
@@ -268,17 +272,21 @@
 					"name": "Get Customer by ID",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/customers/8026e367-38bf-466f-82a2-c283aed9d8bb",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/b2f1dbf5-5ff7-4157-9ec7-480cfdad9e63",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"customers",
-								"8026e367-38bf-466f-82a2-c283aed9d8bb"
+								"b2f1dbf5-5ff7-4157-9ec7-480cfdad9e63"
 							]
 						}
 					},
@@ -288,10 +296,16 @@
 					"name": "Create Customer",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"FARLOS\",\r\n    \"lastName\": \"CAECERES\",\r\n    \"documentType\": \"DNI\",\r\n    \"documentNumber\": \"70556619\",\r\n    \"birthDate\": \"2024-03-30\",\r\n    \"gender\": \"OTHER\",\r\n    \"phoneNumber\": \"920667633\",\r\n    \"address\": \"MANTARO 285\",\r\n    \"maritalStatus\": \"DIVORCED\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"SCARLET\",\r\n  \"lastName\": \"JOHANSON\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,12 +313,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/customers",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"customers"
 							]
@@ -316,10 +328,16 @@
 					"name": "Update Customer",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"PAOLE\",\r\n    \"lastName\": \"HARO\",\r\n    \"documentType\": \"DNI\",\r\n    \"documentNumber\": \"987654321\",\r\n    \"birthDate\": \"2024-03-30\",\r\n    \"gender\": \"FEMALE\",\r\n    \"phoneNumber\": \"920667633\",\r\n    \"address\": \"MANTARO 285\",\r\n    \"maritalStatus\": \"DIVORCED\"\r\n}",
+							"raw": "{\r\n  \"firstName\": \"JULIA\",\r\n  \"lastName\": \"ROBERTS\",\r\n  \"documentType\": \"DNI\",\r\n  \"documentNumber\": \"49862570\",\r\n  \"birthDate\": \"2001-03-17\",\r\n  \"phoneNumber\": \"948625907\",\r\n  \"districtId\": \"130101\",\r\n  \"cinemaId\": \"becf002d-8369-4aaa-8122-715dd4806090\",\r\n  \"gender\": \"F\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -327,15 +345,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/customers/ca2139d1-1aad-4599-a4c0-2fff66f55554",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/37afb24a-3cdb-4361-a69f-228f409ef405",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"customers",
-								"ca2139d1-1aad-4599-a4c0-2fff66f55554"
+								"37afb24a-3cdb-4361-a69f-228f409ef405"
 							]
 						}
 					},
@@ -345,17 +361,171 @@
 					"name": "Delete Customer",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/customers/ca2139d1-1aad-4599-a4c0-2fff66f55554",
-							"protocol": "http",
+							"raw": "{{base_url}}/customers/37afb24a-3cdb-4361-a69f-228f409ef405",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "8080",
 							"path": [
 								"customers",
-								"ca2139d1-1aad-4599-a4c0-2fff66f55554"
+								"37afb24a-3cdb-4361-a69f-228f409ef405"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cinemas",
+			"item": [
+				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "Get Cinemas",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/cinemas/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"cinemas",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Cinema",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"districtId\": \"150114\",\r\n    \"cinemaName\": \"Cinemagic Lima 2\",\r\n    \"address\": \"Av. Country 1234\",\r\n    \"phoneNumber\": \"960946357\",\r\n    \"contactEmail\": \"contacto.lima2@cinemagic.pe\",\r\n    \"imageUrl\": \"https://i.ibb.co/MymXYWhQ/cm-trujillo2.png\",\r\n    \"status\": \"ACTIVE\",\r\n    \"openingDate\": \"2025-07-12\",\r\n    \"openingTime\": \"12:30:00\",\r\n    \"closingTime\": \"20:50:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/cinemas/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"cinemas",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Cinema",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"districtId\": \"150114\",\r\n    \"cinemaName\": \"Cinemagic Lima 2 La Molina\",\r\n    \"address\": \"Av. Country 1234\",\r\n    \"phoneNumber\": \"960346752\",\r\n    \"contactEmail\": \"contacto.lima2@cinemagic.pe\",\r\n    \"imageUrl\": \"https://i.ibb.co/MymXYWhQ/cm-trujillo2.png\",\r\n    \"status\": \"INACTIVE\",\r\n    \"openingDate\": \"2025-07-12\",\r\n    \"openingTime\": \"13:30:00\",\r\n    \"closingTime\": \"21:30:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/cinemas/admin/f65b8601-f704-488b-a157-70aa77a47d2b",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"cinemas",
+										"admin",
+										"f65b8601-f704-488b-a157-70aa77a47d2b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Cinema",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/cinemas/admin/f65b8601-f704-488b-a157-70aa77a47d2b",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"cinemas",
+										"admin",
+										"f65b8601-f704-488b-a157-70aa77a47d2b"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Public Cinemas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/cinemas/public",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cinemas",
+								"public"
 							]
 						}
 					},

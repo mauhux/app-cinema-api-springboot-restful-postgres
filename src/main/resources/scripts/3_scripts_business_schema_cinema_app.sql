@@ -50,6 +50,38 @@ INSERT INTO auth_authorities (authority_id, authority_name) VALUES
 --(5,'CINEMA_UPDATE');
 
 -- ============================================================================
+-- 1.4. Insert Users
+-- Password: 123456 (BCrypt hashed)
+-- ============================================================================
+
+INSERT INTO auth_users (username, hashed_password, full_name) VALUES
+('admin', '$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S', 'Main Administrator'),
+--('cinema_manager_01', '$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S', 'Lima Cinema Manager'),
+--('cinema_employee_01', '$2a$10$e6Ijw.dlWTn8KkEsbF3w9uDgNGFSz/gXV3BVrR/LBElZOmOAtRL4S', 'Employee - Miraflores');
+
+-- ============================================================================
+-- 1.5. Assign Authorities to Users
+-- ============================================================================
+-- Admin has all permissions
+INSERT INTO auth_user_authorities (user_id, authority_id)
+SELECT 1, authority_id FROM auth_authorities;
+
+-- Cinema Manager permissions
+--INSERT INTO auth_user_authorities (user_id, authority_id)
+--SELECT 2, authority_id FROM auth_authorities
+--WHERE authority_name IN (
+--  'CINEMA_MANAGER', 'CINEMA_VIEW', 'MOVIE_MANAGE', 'SHOWTIME_MANAGE', 'RESERVATION_VIEW'
+--);
+
+-- ============================================================================
+-- 1.6. SELECT Queries
+-- ============================================================================
+
+SELECT * FROM auth_authorities;
+SELECT * FROM auth_users;
+SELECT * FROM auth_user_authorities;
+
+-- ============================================================================
 -- 2.1. Tables creation: Departments, Provinces, Districts
 -- ============================================================================
 
@@ -222,7 +254,67 @@ INSERT INTO cinemas (id, district_id, cinema_name, address, phone_number, contac
 (gen_random_uuid(), '250101', 'Cinemagic Pucallpa', 'Av.Centenario 529 - Ucayali', '960793488', 'contacto.ucayali@cinemagic.pe', 'https://i.ibb.co/DgszHhJ1/cm-calleria.png', 'ACTIVE', '2007-09-27', '14:20:00', '23:15:00');
 
 
-
 SELECT * FROM cinemas;
+
+
+-- ============================================================================
+-- 4.1. Table creation: customers
+-- ============================================================================
+
+CREATE TABLE customers (
+    id UUID PRIMARY KEY,
+--	user_id INTEGER NOT NULL
+    district_id CHAR(6) NOT NULL,
+    cinema_id UUID NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    document_type VARCHAR(20) NOT NULL,
+    document_number VARCHAR(12) NOT NULL UNIQUE,
+    birth_date DATE,
+    phone_number CHAR(9),
+    gender CHAR(1),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+--	CONSTRAINT fk_auth_user
+--        FOREIGN KEY (user_id)
+--        REFERENCES auth_users(user_id)
+--        ON DELETE CASCADE
+
+	CONSTRAINT fk_district
+        FOREIGN KEY (district_id)
+        REFERENCES districts(district_id)
+        ON DELETE CASCADE,
+
+	CONSTRAINT fk_cinema
+        FOREIGN KEY (cinema_id)
+        REFERENCES cinemas(id)
+        ON DELETE CASCADE
+);
+
+
+-- ============================================================================
+-- 4.2. Cleanup (Useful for Development Reset)
+-- ============================================================================
+
+DELETE FROM customers;
+
+-- ============================================================================
+-- 4.3. DATA INSERTION – Customer
+-- ============================================================================
+
+INSERT INTO customers (id, district_id, cinema_id, first_name, last_name, document_type, document_number, birth_date, phone_number, gender) VALUES
+(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'TOM', 'HOLLAND ', 'DNI', '87654321', '2002-05-15', '948615732', 'M'),
+(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'PEDRO', 'PASCAL', 'CE', '003183661', '2001-03-11', '948761059', 'M'),
+(gen_random_uuid(), '130101', 'becf002d-8369-4aaa-8122-715dd4806090', 'SABRINA', 'CARPENTER', 'PASSPORT', '004876529', '2003-04-07', '946358045', 'F');
+
+
+SELECT * FROM customers;
+
+
+
+--SELECT * FROM auth_authorities;
+--SELECT * FROM auth_users;
+--SELECT * FROM auth_user_authorities;
 
 

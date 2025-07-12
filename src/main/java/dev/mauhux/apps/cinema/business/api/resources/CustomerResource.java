@@ -53,7 +53,7 @@ public class CustomerResource {
     @GetMapping
     public ResponseEntity<List<CustomerResponseDto>> getCustomers() {
         try {
-            List<CustomerResponseDto> customers = customerService.findAllCustomers();
+            List<CustomerResponseDto> customers = customerService.getCustomers();
             if (customers.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
@@ -89,7 +89,7 @@ public class CustomerResource {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponseDto> getCustomerById(@PathVariable UUID id) {
         try {
-            Optional<CustomerResponseDto> customer = customerService.findCustomerById(id);
+            Optional<CustomerResponseDto> customer = customerService.getCustomerById(id);
             return customer
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.noContent().build());
@@ -165,7 +165,7 @@ public class CustomerResource {
     public ResponseEntity<CustomerResponseDto> update(@Valid @RequestBody CustomerRequestDto customerRequestDto,
                                                       @PathVariable UUID id) {
         try {
-            CustomerResponseDto customerResponseDto = customerService.updateCustomer(customerRequestDto, id);
+            CustomerResponseDto customerResponseDto = customerService.updateCustomer(id, customerRequestDto);
             return ResponseEntity.ok(customerResponseDto);
         } catch (Exception e) {
             log.error("Error updating customer.", e);
