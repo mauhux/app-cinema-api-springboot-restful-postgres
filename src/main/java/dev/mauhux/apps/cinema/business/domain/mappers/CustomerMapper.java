@@ -11,13 +11,18 @@ import org.mapstruct.MappingTarget;
 public interface CustomerMapper {
 
     //@Mapping(source = "firstName", target = "firstName")
+    @Mapping(source = "loginEmail", target = "email")
     @Mapping(source = "cinema", target = "favoriteCinema")
     CustomerResponseDto toDto(CustomerEntity customerEntity);
 
     //@Mapping(target = "id", ignore = true)
+    @Mapping(source = "email", target = "loginEmail")
+    @Mapping(source = "password", target = "loginPassword")
     CustomerEntity toEntity(CustomerRequestDto customerRequestDto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "loginEmail", source = "email")
+    @Mapping(target = "loginPassword", source = "password")
     void updateEntityFromDto(CustomerRequestDto customerRequestDto,
                              @MappingTarget CustomerEntity customerEntity);
 

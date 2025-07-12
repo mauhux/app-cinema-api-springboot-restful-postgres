@@ -43,7 +43,8 @@ DELETE FROM auth_authorities;
 -- ============================================================================
 
 INSERT INTO auth_authorities (authority_id, authority_name) VALUES
-(1,'ADMIN');
+(1, 'ADMIN'),
+(2, 'CUSTOMER');
 --(2,'CINEMA_MANAGER'),
 --(3,'CINEMA_VIEW'),
 --(4,'CINEMA_CREATE'),
@@ -263,11 +264,12 @@ SELECT * FROM cinemas;
 
 CREATE TABLE customers (
     id UUID PRIMARY KEY,
---	user_id INTEGER NOT NULL
     district_id CHAR(6) NOT NULL,
     cinema_id UUID NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
+	login_email VARCHAR(100) NOT NULL,
+	login_password VARCHAR(100) NOT NULL,
     document_type VARCHAR(20) NOT NULL,
     document_number VARCHAR(12) NOT NULL UNIQUE,
     birth_date DATE,
@@ -275,11 +277,6 @@ CREATE TABLE customers (
     gender CHAR(1),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
---	CONSTRAINT fk_auth_user
---        FOREIGN KEY (user_id)
---        REFERENCES auth_users(user_id)
---        ON DELETE CASCADE
 
 	CONSTRAINT fk_district
         FOREIGN KEY (district_id)
@@ -303,13 +300,14 @@ DELETE FROM customers;
 -- 4.3. DATA INSERTION – Customer
 -- ============================================================================
 
-INSERT INTO customers (id, district_id, cinema_id, first_name, last_name, document_type, document_number, birth_date, phone_number, gender) VALUES
-(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'TOM', 'HOLLAND ', 'DNI', '87654321', '2002-05-15', '948615732', 'M'),
-(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'PEDRO', 'PASCAL', 'CE', '003183661', '2001-03-11', '948761059', 'M'),
-(gen_random_uuid(), '130101', 'becf002d-8369-4aaa-8122-715dd4806090', 'SABRINA', 'CARPENTER', 'PASSPORT', '004876529', '2003-04-07', '946358045', 'F');
+INSERT INTO customers (id, district_id, cinema_id, first_name, last_name, login_email, login_password, document_type, document_number, birth_date, phone_number, gender) VALUES
+(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'TOM', 'HOLLAND ', 'tom@gmail.com', 'pass123', 'DNI', '87654321', '2002-05-15', '948615732', 'M'),
+(gen_random_uuid(), '150101', 'ef69fb3d-d4a7-453b-be46-aae44291adf3', 'PEDRO', 'PASCAL', 'pedro@gmail.com', 'pass123', 'CE', '003183661', '2001-03-11', '948761059', 'M'),
+(gen_random_uuid(), '130101', 'becf002d-8369-4aaa-8122-715dd4806090', 'SABRINA', 'CARPENTER', 'sabrina@gmail.com', 'pass123', 'PASSPORT', '004876529', '2003-04-07', '946358045', 'F');
 
 
 SELECT * FROM customers;
+
 
 
 
