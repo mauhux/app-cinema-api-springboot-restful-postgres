@@ -17,6 +17,6 @@ public record CustomerResponseDto(
         String phoneNumber,
         String gender,
         DistrictResponseDto district,
-        CinemaPublicResponseDto favoriteCinema
+        CinemaResponseDto favoriteCinema
 ) {
 }

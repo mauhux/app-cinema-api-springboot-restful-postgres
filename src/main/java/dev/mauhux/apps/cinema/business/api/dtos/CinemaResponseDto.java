@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public record CinemaAdminResponseDto(
-
+public record CinemaResponseDto(
         UUID id,
-        DistrictResponseDto district,
         String cinemaName,
         String address,
         String phoneNumber,
@@ -20,6 +18,7 @@ public record CinemaAdminResponseDto(
         LocalDate openingDate,
         LocalTime openingTime,
         LocalTime closingTime,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        DistrictResponseDto district
 ) {
 }

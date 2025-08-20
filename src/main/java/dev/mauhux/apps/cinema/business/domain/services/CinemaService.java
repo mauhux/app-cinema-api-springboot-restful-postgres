@@ -1,24 +1,22 @@
 package dev.mauhux.apps.cinema.business.domain.services;
 
-import dev.mauhux.apps.cinema.business.api.dtos.CinemaAdminResponseDto;
-import dev.mauhux.apps.cinema.business.api.dtos.CinemaPublicResponseDto;
 import dev.mauhux.apps.cinema.business.api.dtos.CinemaRequestDto;
+import dev.mauhux.apps.cinema.business.api.dtos.CinemaResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface CinemaService {
 
-    List<CinemaPublicResponseDto> getPublicCinemas();
 
-    List<CinemaAdminResponseDto> getAdminCinemas();
+    CinemaResponseDto create(CinemaRequestDto dto);
 
-    Optional<CinemaAdminResponseDto> getCinemaById(UUID id);
+    Page<CinemaResponseDto> getCinemas(Pageable pageable);
 
-    CinemaAdminResponseDto createCinema(CinemaRequestDto dto);
+    CinemaResponseDto getCinemaById(UUID id);
 
-    CinemaAdminResponseDto updateCinema(UUID id, CinemaRequestDto dto);
+    CinemaResponseDto update(UUID id, CinemaRequestDto dto);
 
-    void deleteCinema(UUID id);
+    void delete(UUID id);
 }

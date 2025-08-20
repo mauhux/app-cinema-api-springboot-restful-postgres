@@ -1,18 +1,17 @@
 package dev.mauhux.apps.cinema.business.domain.services.impl;
 
-import dev.mauhux.apps.cinema.business.api.dtos.CinemaAdminResponseDto;
-import dev.mauhux.apps.cinema.business.api.dtos.CinemaPublicResponseDto;
 import dev.mauhux.apps.cinema.business.api.dtos.CinemaRequestDto;
+import dev.mauhux.apps.cinema.business.api.dtos.CinemaResponseDto;
 import dev.mauhux.apps.cinema.business.data.repositories.CinemaRepository;
 import dev.mauhux.apps.cinema.business.data.repositories.DistrictRepository;
 import dev.mauhux.apps.cinema.business.domain.mappers.CinemaMapper;
 import dev.mauhux.apps.cinema.business.domain.services.CinemaService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -25,60 +24,49 @@ public class CinemaServiceImpl implements CinemaService {
     private final CinemaMapper cinemaMapper;
 
     @Override
-    public List<CinemaPublicResponseDto> getPublicCinemas() {
-        return cinemaRepository
-                .findAll()
-                .stream()
-                .map(cinemaMapper::toPublicDto)
-                .toList();
-    }
-
-    @Override
-    public List<CinemaAdminResponseDto> getAdminCinemas() {
-        return cinemaRepository
-                .findAll()
-                .stream()
-                .map(cinemaMapper::toAdminDto)
-                .toList();
-    }
-
-    @Override
-    public Optional<CinemaAdminResponseDto> getCinemaById(UUID id) {
-        return cinemaRepository.findById(id)
-                .map(cinemaMapper::toAdminDto);
-    }
-
-    @Override
-    public CinemaAdminResponseDto createCinema(CinemaRequestDto cinemaRequestDto) {
-        var district = districtRepository.findById(cinemaRequestDto.districtId())
+    public CinemaResponseDto create(CinemaRequestDto dto) {
+        var cinema = cinemaMapper.toEntity(dto);
+        var district = districtRepository.findById(dto.districtId())
                 .orElseThrow(() -> new RuntimeException("District not found"));
+        cinema.setDistrict(district);
 
-        var cinemaEntity = cinemaMapper.toEntity(cinemaRequestDto);
-        cinemaEntity.setDistrict(district);
-
-        var saved = cinemaRepository.save(cinemaEntity);
-
-        return cinemaMapper.toAdminDto(saved);
+        var saved = cinemaRepository.save(cinema);
+        return cinemaMapper.toDto(saved);
     }
 
     @Override
-    public CinemaAdminResponseDto updateCinema(UUID id, CinemaRequestDto dto) {
-        return cinemaRepository
-                .findById(id)
-                .map(cinemaEntity -> {
-                    cinemaMapper.updateEntityFromDto(dto, cinemaEntity);
-                    return cinemaMapper.toAdminDto(cinemaRepository.save(cinemaEntity));
+    public Page<CinemaResponseDto> getCinemas(Pageable pageable) {
+        return cinemaRepository.findAll(pageable)
+                .map(cinemaMapper::toDto);
+    }
+
+    @Override
+    public CinemaResponseDto getCinemaById(UUID id) {
+        return cinemaRepository.findById(id)
+                .map(cinemaMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Cinema not found"));
+    }
+
+    @Override
+    public CinemaResponseDto update(UUID id, CinemaRequestDto dto) {
+        return cinemaRepository.findById(id)
+                .map(existing -> {
+                    cinemaMapper.updateEntityFromDto(dto, existing);
+                    var district = districtRepository.findById(dto.districtId())
+                            .orElseThrow(() -> new RuntimeException("District not found"));
+                    existing.setDistrict(district);
+
+                    var saved = cinemaRepository.save(existing);
+                    return cinemaMapper.toDto(saved);
                 })
-                .orElseThrow(() -> {
-                    log.error("Cinema with ID {} not found.", id);
-                    return new RuntimeException("Cinema not found.");
-                });
+                .orElseThrow(() -> new RuntimeException("Cinema not found"));
     }
 
     @Override
-    public void deleteCinema(UUID id) {
-        cinemaRepository
-                .findById(id)
-                .ifPresent(cinemaRepository::delete);
+    public void delete(UUID id) {
+        if (!cinemaRepository.existsById(id)) {
+            throw new RuntimeException("Cinema not found");
+        }
+        cinemaRepository.deleteById(id);
     }
 }

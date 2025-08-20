@@ -12,22 +12,22 @@ public record CinemaRequestDto(
         String districtId,
 
         @NotBlank(message = "Cinema name is required.")
-        @Size(max = 100, message = "Cinema name must be at most 100 characters.")
+        @Size(max = 100, message = "Cinema name must not exceed 100 characters.")
         String cinemaName,
 
         @NotBlank(message = "Address is required.")
-        @Size(max = 100, message = "Address must be at most 100 characters.")
+        @Size(max = 100, message = "Address must not exceed 100 characters.")
         String address,
 
         @Pattern(regexp = "\\d{9}", message = "Phone number must be 9 digits.")
         String phoneNumber,
 
-        @Email(message = "Invalid email format.")
+        @Email(message = "Contact email should be valid.")
         String contactEmail,
 
         String imageUrl,
 
-        @NotNull(message = "Cinema status is required.")
+        @NotNull(message = "Status is required.")
         CinemaStatus status,
 
         LocalDate openingDate,
